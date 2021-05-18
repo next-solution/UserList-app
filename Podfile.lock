@@ -1,0 +1,25 @@
+PODS:
+  - CocoaLumberjack (3.7.2):
+    - CocoaLumberjack/Core (= 3.7.2)
+  - CocoaLumberjack/Core (3.7.2)
+  - ServiceFramework (0.0.1)
+
+DEPENDENCIES:
+  - CocoaLumberjack
+  - ServiceFramework (from `../ServiceFramework/`)
+
+SPEC REPOS:
+  trunk:
+    - CocoaLumberjack
+
+EXTERNAL SOURCES:
+  ServiceFramework:
+    :path: "../ServiceFramework/"
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
+  ServiceFramework: c867c5a13ae3b7f8d6497abb4c594187fa3cd6ee
+
+PODFILE CHECKSUM: 4cad54ff40db28c3448c3959595321fefefdabb5
+
+COCOAPODS: 1.10.1
