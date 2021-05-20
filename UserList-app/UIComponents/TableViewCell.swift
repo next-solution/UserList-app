@@ -6,12 +6,12 @@
 //
 
 import UIKit
+import ServiceFramework
 
 class TableViewCell: UITableViewCell {
     
     let avatarImageView = UIImageView()
     let usernameLabel = UILabel()
-    var baseLabelConstraitns = [NSLayoutConstraint]()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,11 +24,16 @@ class TableViewCell: UITableViewCell {
     }
     
    func setupConstraints() {
+    
+    addSubview(avatarImageView)
+    addSubview(usernameLabel)
+    
+    avatarImageView.translatesAutoresizingMaskIntoConstraints = false
+    usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
-            avatarImageView.topAnchor.constraint(equalTo: topAnchor),
-            avatarImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            avatarImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             avatarImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 19),
             avatarImageView.heightAnchor.constraint(equalToConstant: 19),
             avatarImageView.widthAnchor.constraint(equalToConstant: 19),
@@ -36,10 +41,9 @@ class TableViewCell: UITableViewCell {
             
             usernameLabel.leftAnchor.constraint(equalTo: avatarImageView.rightAnchor, constant: 7),
             usernameLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -7),
-            usernameLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: 5),
+            usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
             
             ])
         
     }
-    
 }

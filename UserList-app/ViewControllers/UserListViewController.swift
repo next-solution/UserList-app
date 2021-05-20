@@ -40,6 +40,11 @@ class UserListViewController: ViewController, UITableViewDelegate, UITableViewDa
             self?.tableView.reloadData()
         }
         
+        self.viewModel.avatar.bind { [weak self] (cellAddress, image) in
+            let cell = self?.tableView.visibleCells.first(where: { String(format: "%p", unsafeBitCast($0, to: Int.self)) == cellAddress }) as? TableViewCell
+            cell?.avatarImageView.image = image
+        }
+        
         viewModel.fetchUsers()
     }
     
@@ -80,12 +85,15 @@ class UserListViewController: ViewController, UITableViewDelegate, UITableViewDa
         let item = viewModel.users.value[index]
         let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier, for: indexPath) as! TableViewCell
         cell.selectionStyle = .none
-        cell.avatarImageView.image = item.avatarImage
         cell.usernameLabel.text  = item.name
         
         cell.layoutIfNeeded()
         cell.layoutSubviews()
         cell.contentView.superview?.clipsToBounds = true
+        
+        let cellAddress = String(format: "%p", unsafeBitCast(cell, to: Int.self))
+        viewModel.fetchAvatar(url: item.avatarUrl, cellAddress: cellAddress)
+        
         return cell
     }
     

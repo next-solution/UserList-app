@@ -8,13 +8,13 @@
 import ServiceFramework
 
 class UserViewModel {
-    var serviceType: ServiceType
+    var endpoint: Endpoint
     var name: String
     var avatarUrl: String
     var avatarImage: UIImage?
     
-    init(user: IUser, serviceType: ServiceType) {
-        self.serviceType = serviceType
+    init(user: IUser, serviceType: Endpoint) {
+        self.endpoint = serviceType
         self.name = user.username
         self.avatarUrl = user.avatarUrl
     }

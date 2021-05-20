@@ -5,7 +5,7 @@ PODS:
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
-  - ServiceFramework (0.0.4):
+  - ServiceFramework (0.0.25):
     - Alamofire
     - AlamofireImage
     - CocoaLumberjack
@@ -31,7 +31,7 @@ SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
-  ServiceFramework: 33513f8b89b080f2ad66dd287e6ce9c16a3c8c79
+  ServiceFramework: 4e3a44528f56e84a5bd9cfe4069f527709bb40ee
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
 
 PODFILE CHECKSUM: ec6a8aab829d365625e2899510ff987bfd565f88
