@@ -7,110 +7,82 @@
 
 import UIKit
 
-class UserListViewController: ViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    private let refreshControl = UIRefreshControl()
-    
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: CGRect.zero, style: .grouped)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.separatorStyle = .none
-        tableView.showsVerticalScrollIndicator = false
-        tableView.showsHorizontalScrollIndicator = false
-        tableView.allowsSelection = true
-        tableView.allowsMultipleSelection = false
-        tableView.backgroundColor = .white
-        return tableView
-    }()
-    
-    private let errorStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
+class UserListViewController: ViewController {
     
     private let viewModel = UserListViewModel()
     
+    private let refreshControl = UIRefreshControl()
+    private let tableView = TableView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = UIColor.white
-        configureTableView()
         
-        viewModel.users.bind { [weak self] users in
-            self?.tableView.reloadData()
-        }
-        
-        self.viewModel.avatar.bind { [weak self] (cellAddress, image) in
-            let cell = self?.tableView.visibleCells.first(where: { String(format: "%p", unsafeBitCast($0, to: Int.self)) == cellAddress }) as? TableViewCell
-            cell?.avatarImageView.image = image
-        }
+        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
         
         viewModel.fetchUsers()
+        bindData()
+        configureTableView()
+        setupLayout()
+    }
+    
+    func bindData() {
+        viewModel.users.bind { [weak self] users in
+            self?.tableView.reloadData()
+            self?.refreshControl.endRefreshing()
+        }
     }
     
     func configureTableView() {
-        
-        tableView.allowsSelection = false
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseIdentifier)
-        
+    }
+    
+    func setupLayout() {
         tableView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(refreshData(_:)), for: .valueChanged)
-        
-        view.addSubview(errorStackView)
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            
-            errorStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
-            errorStackView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            errorStackView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            
-            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)
         ])
-        
-        tableView.topAnchor.constraint(equalTo: errorStackView.bottomAnchor, constant: 0).isActive = true
-        tableView.tableHeaderView?.frame.size = CGSize(width: tableView.frame.width, height: 0)
-        
     }
     
+    @objc private func refreshData(_ sender: Any) {
+        viewModel.fetchUsers()
+    }
+}
+
+extension UserListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let index = indexPath.row
-        let item = viewModel.users.value[index]
+        let item = viewModel.users.value[indexPath.row]
         let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier, for: indexPath) as! TableViewCell
+        
+        cell.usernameLabel.text = item.name
+        cell.endpointLabel.text = item.endpoint
+        cell.viewModel = item
+        cell.bindData()
+        item.fetchAvatar()
+        
         cell.selectionStyle = .none
-        cell.usernameLabel.text  = item.name
-        
-        cell.layoutIfNeeded()
-        cell.layoutSubviews()
-        cell.contentView.superview?.clipsToBounds = true
-        
-        let cellAddress = String(format: "%p", unsafeBitCast(cell, to: Int.self))
-        viewModel.fetchAvatar(url: item.avatarUrl, cellAddress: cellAddress)
         
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.users.value.count
     }
-    
-    @objc private func refreshData(_ sender: Any) {
-        // TODO
+}
+
+extension UserListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let viewController = UserDetailsViewController(viewModel: viewModel.users.value[indexPath.row])
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
