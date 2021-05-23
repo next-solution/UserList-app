@@ -7,6 +7,6 @@ target 'UserList-app' do
   use_frameworks!
 
   pod 'SwiftLint'
-  pod 'ServiceFramework', :path => '../ServiceFramework', :inhibit_warnings => false
+  pod 'ServiceFramework', :git => 'https://github.com/next-solution/ServiceFramework.git'
 
 end
