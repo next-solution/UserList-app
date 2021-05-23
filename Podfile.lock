@@ -5,22 +5,24 @@ PODS:
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
-  - ServiceFramework (0.0.25):
+  - ServiceFramework (0.0.7):
     - Alamofire
     - AlamofireImage
     - CocoaLumberjack
     - Swinject
+  - SwiftLint (0.43.1)
   - Swinject (2.7.1)
 
 DEPENDENCIES:
-  - CocoaLumberjack
   - ServiceFramework (from `../ServiceFramework`)
+  - SwiftLint
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - AlamofireImage
     - CocoaLumberjack
+    - SwiftLint
     - Swinject
 
 EXTERNAL SOURCES:
@@ -31,9 +33,10 @@ SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
   AlamofireImage: 34a2d90b0e5fe6a5605f85ae4b7b01e784c60192
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
-  ServiceFramework: 4e3a44528f56e84a5bd9cfe4069f527709bb40ee
+  ServiceFramework: 9d0b6c2a0fd79f2caaac6d0a3a984eab0b980733
+  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
 
-PODFILE CHECKSUM: ec6a8aab829d365625e2899510ff987bfd565f88
+PODFILE CHECKSUM: 315b4c502e3f713c07670d8186ab28f53be25099
 
 COCOAPODS: 1.10.1

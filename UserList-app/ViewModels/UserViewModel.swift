@@ -6,6 +6,7 @@
 //
 
 import ServiceFramework
+import Swinject
 
 class UserViewModel {
     
@@ -16,7 +17,7 @@ class UserViewModel {
     let avatarImage = Box(UIImage())
     let error = Box("")
     
-    init(user: IUser, serviceType: Endpoint) {
+    init(user: User, serviceType: Endpoint) {
         self.endpoint = serviceType.rawValue
         self.name = user.username
         self.avatarUrl = user.avatarUrl
@@ -25,7 +26,8 @@ class UserViewModel {
     func fetchAvatar() {
         guard let url = URL(string: avatarUrl) else { return }
         
-        Fetcher.default.fetchAvatar(url: url) { [weak self] result in
+        let fetcher = Assembler.default.resolver.resolve(FetcherProtocol.self, name: "Fetcher")
+        fetcher?.fetchAvatar(url: url) { [weak self] result in
             switch result {
             case .success(let data):
                 if let image = UIImage(data: data) {

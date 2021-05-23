@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UserListViewController: ViewController {
+class UserListViewController: UIViewController {
     
     private let viewModel = UserListViewModel()
     
@@ -28,7 +28,7 @@ class UserListViewController: ViewController {
     }
     
     func bindData() {
-        viewModel.users.bind { [weak self] users in
+        viewModel.users.bind { [weak self] _ in
             self?.tableView.reloadData()
             self?.refreshControl.endRefreshing()
         }
@@ -60,9 +60,12 @@ class UserListViewController: ViewController {
 
 extension UserListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = viewModel.users.value[indexPath.row]
-        let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier, for: indexPath) as! TableViewCell
+        guard let cell: TableViewCell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier, for: indexPath) as? TableViewCell
+        else {
+            return UITableViewCell()
+        }
         
+        let item = viewModel.users.value[indexPath.row]
         cell.usernameLabel.text = item.name
         cell.endpointLabel.text = item.endpoint
         cell.viewModel = item
@@ -85,4 +88,3 @@ extension UserListViewController: UITableViewDelegate {
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
-

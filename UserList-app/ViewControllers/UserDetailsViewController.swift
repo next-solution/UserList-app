@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UserDetailsViewController : ViewController {
+class UserDetailsViewController: UIViewController {
     
     private let viewModel: UserViewModel
     

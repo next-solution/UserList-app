@@ -6,6 +6,7 @@
 //
 
 import ServiceFramework
+import Swinject
 
 class UserListViewModel {
     
@@ -17,7 +18,8 @@ class UserListViewModel {
     func fetchUsers() {
         users.value = []
         
-        Fetcher.default.fetchInfoAboutUsers() { [weak self] result in
+        let fetcher = Assembler.default.resolver.resolve(FetcherProtocol.self, name: "Fetcher")
+        fetcher?.fetchInfoAboutUsers() { [weak self] result in
             for userList in result {
                 switch userList.users {
                 case .success(let users):

@@ -23,11 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func openMainViewController() {
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        
         let navcontroller = UINavigationController(rootViewController: UserListViewController())
         window?.rootViewController = navcontroller
         window?.makeKeyAndVisible()
     }
 
 }
-
